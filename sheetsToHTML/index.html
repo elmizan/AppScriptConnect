@@ -1,0 +1,120 @@
+<!doctype html>
+<html>
+  <head>
+    <base target="_self">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  </head>
+
+  <body>
+<div class="container">
+        <br>
+        <div class="row">
+            <div class="col">
+
+
+                <center>
+                    <form id="search-form" onsubmit="handleFormSubmit(this)">
+                        <div class="form-group mb-2">
+                            <h5 for="searchtext">Download Sertifikat Workshop</h5>
+                        </div><br>
+                        <div class="input-group justify-content-center mb-3">
+
+                          <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="fas fa-user"></i></span>
+                            <input type="text" class="form-control" placeholder="Username" id="searchtext" name="searchtext">
+                          </div>                          
+                        </div>
+
+                        <div class="input-group justify-content-center mb-3">
+
+                          <div class="input-group mb-3">
+                            <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                            <input type="text" class="form-control" placeholder="Password" id="searchtext2" name="searchtext2">
+                          </div>                          
+                        </div>
+
+                        <div class="input-group justify-content-center text-center">
+                          <div class="input-group">
+                            <span class="input-group-text"><i class="fas fa-download"></i></span>
+                            <button class="btn btn-primary" type="submit" id="search">Download Sertifikat</button>
+                          </div>
+                        </div>
+                        <span id="spinner" class="spinner-border text-info d-none" role="status"
+                            aria-hidden="true"></span>
+                    </form>
+                </center>
+
+
+            </div>
+        </div>
+
+        <br>
+       <div class="row justify-content-md-center">
+            <div class="col">
+               <div id="search-results" class="table-responsive">
+                   <!-- The Data Table is inserted here by JavaScript -->
+               </div>
+            </div>
+       </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js" integrity="sha384-eMNCOe7tC1doHpGoWe/6oMVemdAVTMs2xqW4mwXrXsW0L84Iytr2wi5v2QjrP/xp" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
+
+    <script>
+
+        function preventFormSubmit() {
+            var forms = document.querySelectorAll('form');
+            for (var i = 0; i < forms.length; i++) {
+                forms[i].addEventListener('submit', function (event) {
+                    event.preventDefault();
+                });
+            }
+        }
+        window.addEventListener("load", preventFormSubmit, true);
+
+
+
+        function handleFormSubmit(formObject) {
+            if (document.getElementById('searchtext').value == "" || document.getElementById('searchtext2').value == "") {
+                alert("Kesalahan nama email atau password!");
+            } else {
+                document.getElementById('spinner').classList.remove("d-none");
+                google.script.run.withSuccessHandler(createTable).processForm(formObject);
+                document.getElementById("search-form").reset();
+            }
+        }
+
+
+        function createTable(dataArray) {
+            document.getElementById('spinner').classList.add("d-none");
+            if (dataArray && dataArray !== undefined && dataArray.length != 0) {
+                var result = "<table class='table table-sm table-striped' id='dtable' style='font-size:0.8em'>" +
+                    "<tbody style='table-layout: fixed; width: 100%'>";
+                { result += "<tr>" + "<th scope='row'>Nama Lengkap</th>" + "<td>:</td>" + "<td>" + dataArray[0][0] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Nama Instansi</th>" + "<td>:</td>" + "<td>" + dataArray[0][1] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Kabupaten/Kota</th>" + "<td>:</td>" + "<td>" + dataArray[0][2] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Provinsi</th>" + "<td>:</td>" + "<td>" + dataArray[0][3] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Email</th>" + "<td>:</td>" + "<td>" + dataArray[0][4] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Nama Trainer 1</th>" + "<td>:</td>" + "<td>" + dataArray[0][5] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Skor UK L1</th>" + "<td>:</td>" + "<td>" + dataArray[0][6] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Nama Trainer 2</th>" + "<td>:</td>" + "<td>" + dataArray[0][7] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Skor UK L2</th>" + "<td>:</td>" + "<td>" + dataArray[0][8] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Status</th>" + "<td>:</td>" + "<td>" + dataArray[0][9] + "</td>" + "</tr>"; }
+                { result += "<tr>" + "<th scope='row'>Download</th>" + "<td>:</td>" + "<td>" + dataArray[0][10] + "</td>" + "</tr>"; }
+                result += "</tbody>" + "</table>";
+
+                var div = document.getElementById('search-results');
+                div.innerHTML = result;
+            } else {
+                var div = document.getElementById('search-results');
+
+                div.innerHTML = "Data not found!";
+            }
+        }
+    </script>
+
+  </body>
+</html>
